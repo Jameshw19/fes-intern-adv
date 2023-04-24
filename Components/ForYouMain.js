@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Book from "./Book";
 import PlayCircleRoundedIcon from "@mui/icons-material/PlayCircleRounded";
 import SuggestedBook from "./SuggestedBook";
+import Link from "next/link";
 
 function ForYouMain() {
   const [bookData, setBookData] = useState([]);
@@ -27,37 +28,39 @@ function ForYouMain() {
               Selected Just For You
             </div>
             {bookData.map((book) => (
-              <a
-                key={book.id}
-                className="flex justify-between max-w-3xl bg-amber-100 rounded p-6 mb-6 gap-6 w-full"
-              >
-                <div className="text-black w-2/5">{book.subTitle}</div>
-                <div className="w-[1px] bg-gray-300"></div>
-                <div className="flex gap-4 w-3/5 ">
-                  <div className="h-[140px] w-[140px] min-w-[140px]">
-                    <img src={book.imageLink} alt="bookImg" />
-                  </div>
-                  <div className="w-full ">
-                    <div className="font-semibold text-black mb-2 ">
-                      {book.title}
+              <Link href={"/book/" + book.id} key={book.id} bookData={book}>
+                <div
+                  key={book.id}
+                  className="flex justify-between max-w-3xl bg-amber-100 rounded p-6 mb-6 gap-6 w-full"
+                >
+                  <div className="text-black w-2/5">{book.subTitle}</div>
+                  <div className="w-[1px] bg-gray-300"></div>
+                  <div className="flex gap-4 w-3/5 ">
+                    <div className="h-[140px] w-[140px] min-w-[140px]">
+                      <img src={book.imageLink} alt="bookImg" />
                     </div>
-                    <div className="text-sm text-black mb-4 ">
-                      {book.author}
-                    </div>
-                    <div className="flex items-center gap-2 ">
-                      <div className="flex items-center w-10 min-w-[10px] h-10">
-                        <PlayCircleRoundedIcon
-                          className="w-full h-full bg-black text-white flex justify-center
-                      rounded-[50%] items-center py-1 pr-1 pl-[6px]  "
-                        />
+                    <div className="w-full ">
+                      <div className="font-semibold text-black mb-2 ">
+                        {book.title}
                       </div>
-                      <div className="text-sm font-medium text-black">
-                        3 mins 23 secs
+                      <div className="text-sm text-black mb-4 ">
+                        {book.author}
+                      </div>
+                      <div className="flex items-center gap-2 ">
+                        <div className="flex items-center w-10 min-w-[10px] h-10">
+                          <PlayCircleRoundedIcon
+                            className="w-full h-full bg-black text-white flex justify-center
+                      rounded-[50%] items-center py-1 pr-1 pl-[6px]  "
+                          />
+                        </div>
+                        <div className="text-sm font-medium text-black">
+                          3 mins 23 secs
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </a>
+              </Link>
             ))}
 
             <div>

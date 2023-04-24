@@ -9,8 +9,8 @@ function Book() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(`${BOOKS_URL}recommended`);
-      const data = await response.json();
+      const res = await fetch(`${BOOKS_URL}recommended`);
+      const data = await res.json();
       setBookData(data);
       // console.log(data);
     }
@@ -19,7 +19,7 @@ function Book() {
   return (
     <>
       {bookData.map((book) => (
-        <Link href={"/book" + book.id} key={book.id} bookData={book}>
+        <Link href={"/book/" + book.id} key={book.id} bookData={book}>
           <div className="relative snap-start pt-[32px] pr-[12px] pl-[12px] pb-[12px] no-underline rounded max-w-[200px] w-full">
             {book.subscriptionRequired ? (
               <div className="bg-black w-fit h-[18px] px-2 absolute top-0 right-0 text-white text-xs flex items-center rounded-3xl">

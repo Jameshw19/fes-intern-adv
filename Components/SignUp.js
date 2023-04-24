@@ -1,15 +1,24 @@
 import CloseIcon from "@mui/icons-material/Close";
 import SignIn from "./SignIn";
 import { useState } from "react";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import app, { db } from "@/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { UserAuth } from "@/pages/context/AuthContext";
 
 function SignUp({ handleCloseModal }) {
-  const auth = getAuth(app);
+  const { signUp } = UserAuth();
+
   const [signInModal, setSignInModal] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // const auth = getAuth(app);
+
+  const handleSignUp = async () => {
+    try {
+      await signUp(email, password);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const closeModal = () => {
     handleCloseModal(false);
@@ -17,26 +26,6 @@ function SignUp({ handleCloseModal }) {
 
   const previousModal = () => {
     setSignInModal(true);
-  };
-
-  const signUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-        alert("Successfully created an Account!");
-        // ...
-        const userRef = doc(db, "users", user.uid);
-        setDoc(userRef, {
-          email: user.email,
-        });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        // ..
-        alert(errorCode);
-      });
   };
 
   return (
@@ -78,7 +67,7 @@ function SignUp({ handleCloseModal }) {
                   placeholder="Password"
                 ></input>
                 <button
-                  onClick={signUp}
+                  onClick={handleSignUp}
                   className="bg-green-500 text-black w-full h-10 rounded text-lg flex items-center justify-center
                 min-w-[180px] transition hover:bg-green-400"
                 >

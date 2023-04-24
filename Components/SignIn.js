@@ -1,16 +1,12 @@
 import PersonIcon from "@mui/icons-material/Person";
 import CloseIcon from "@mui/icons-material/Close";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SignUp from "./SignUp";
-import {
-  getAuth,
-  signInAnonymously,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
 import { useRouter } from "next/router";
+import { UserAuth } from "@/pages/context/AuthContext";
 
 function SignIn({ handleCloseModal }) {
-  const auth = getAuth();
+  const { logIn, guestLogin } = UserAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,36 +21,21 @@ function SignIn({ handleCloseModal }) {
     setSignUpModal(true);
   };
 
-  const logIn = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-        //...
-        push("/foryoupage");
-        //...
-        // alert("Successfully Logged Into Your Account");
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-
-        alert(errorCode);
-      });
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await logIn(email, password);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const GuestLogin = () => {
-    signInAnonymously(auth)
-      .then(() => {
-        // Signed in..
-        push("/foryoupage");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ...
-      });
+  const handleGuestLogin = async () => {
+    try {
+      await guestLogin();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -69,7 +50,7 @@ function SignIn({ handleCloseModal }) {
                 Log in to Summarist
               </div>
               <button
-                onClick={GuestLogin}
+                onClick={handleGuestLogin}
                 className="relative flex bg-blue-800 text-white justify-center w-full h-10 rounded text-lg items-center min-w-[180px]"
               >
                 <div className="bg-transparent flex items-center justify-center w-9  h-9 rounded absolute left-[2px]">
@@ -106,8 +87,9 @@ function SignIn({ handleCloseModal }) {
                   type="text"
                   placeholder="Password"
                 ></input>
+
                 <button
-                  onClick={logIn}
+                  onClick={handleLogin}
                   className="bg-green-500 text-black w-full h-10 rounded text-lg flex items-center justify-center
                      min-w-[180px] transition hover:bg-green-400"
                 >
