@@ -17,12 +17,6 @@ const PlayerMain = ({ bookData }) => {
   //... CONTROLS STATES
   const [isPlaying, setIsPlaying] = useState(false);
   //.......
-  const [totalDuration, setTotalDuration] = useState(0);
-  //...
-  const [currentTime, setCurrentTime] = useState(0);
-
-  const [audioInstance, setAudioInstance] = useState(null);
-
   //References
   // const audioRef = useRef();
   const audioRef = useRef(null);
@@ -34,17 +28,6 @@ const PlayerMain = ({ bookData }) => {
   const handleProgressChange = () => {
     audioRef.current.currentTime = progressBarRef.current.value;
   };
-
-  // const formatTime = (time) => {
-  //   if (time && !isNaN(time)) {
-  //     const minutes = Math.floor(time / 60);
-  //     const formatMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
-  //     const seconds = Math.floor(time % 60);
-  //     const formatSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
-  //     return `${formatMinutes}:${formatSeconds}`;
-  //   }
-  //   return "00:00";
-  // };
 
   const formatTime = (time) => {
     if (time && !isNaN(time)) {
@@ -58,46 +41,6 @@ const PlayerMain = ({ bookData }) => {
       ? "00:00"
       : "loading...";
   };
-
-  // useEffect(() => {
-  //   audioRef.current.src = currentTrack;
-  //   audioRef.current.load();
-  //   audioRef.current.addEventListener("loadedmetadata", () => {
-  //     setDuration(audioRef.current.duration);
-  //     setTotalDuration(formatTime(audioRef.current.duration));
-  //   });
-  //   audioRef.current.addEventListener("timeupdate", () => {
-  //     setTimeProgress(audioRef.current.currentTime);
-  //     setCurrentTime(formatTime(audioRef.current.currentTime));
-  //   });
-  //   audioRef.current.addEventListener("ended", () => {
-  //     setIsPlaying(false);
-  //     setTimeProgress(0);
-  //     setCurrentTime("00:00");
-  //   });
-  // }, [currentTrack]);
-
-  useEffect(() => {
-    audioRef.current.src = currentTrack;
-    audioRef.current.load();
-    audioRef.current.addEventListener("loadedmetadata", () => {
-      setDuration(audioRef.current.duration);
-      setTotalDuration(formatTime(audioRef.current.duration));
-    });
-    audioRef.current.addEventListener("timeupdate", () => {
-      setTimeProgress(audioRef.current.currentTime);
-      setCurrentTime(audioRef.current.currentTime);
-      // add this line below
-      setCurrentTime(audioRef.current.currentTime);
-    });
-    audioRef.current.addEventListener("ended", () => {
-      setIsPlaying(false);
-      setTimeProgress(0);
-      setCurrentTime("00:00");
-    });
-  }, [currentTrack]);
-
-  ///...DISPLAYTRACK
 
   const onLoadedMetadata = () => {
     const seconds = audioRef.current.duration;
@@ -121,32 +64,26 @@ const PlayerMain = ({ bookData }) => {
     setIsPlaying((prev) => !prev);
   };
 
-  const repeat = useCallback(
-    (audioLink) => {
-      const currentTime = audioRef.current.currentTime;
-      setTimeProgress(currentTime);
-      progressBarRef.current.value = currentTime;
-      progressBarRef.current.style.setProperty(
-        "--range-progress",
-        `${(progressBarRef.current.value / duration) * 100}%`
-      );
+  const repeat = useCallback(() => {
+    const currentTime = audioRef.current.currentTime;
+    setTimeProgress(currentTime);
+    progressBarRef.current.value = currentTime;
+    progressBarRef.current.style.setProperty(
+      "--range-progress",
+      `${(progressBarRef.current.value / duration) * 100}%`
+    );
 
-      playAnimationRef.current = requestAnimationFrame(() => repeat(audioLink));
-    },
-    [audioRef, duration, progressBarRef, setTimeProgress]
-  );
+    playAnimationRef.current = requestAnimationFrame(repeat);
+  }, [audioRef, duration, progressBarRef, setTimeProgress]);
 
   useEffect(() => {
-    audioRef.current = new Audio(bookData.audioLink);
     if (isPlaying) {
       audioRef.current.play();
     } else {
       audioRef.current.pause();
     }
-    return () => {
-      audioRef.current.pause();
-    };
-  }, [isPlaying, bookData.audioLink]);
+    playAnimationRef.current = requestAnimationFrame(repeat);
+  }, [isPlaying, audioRef, repeat]);
 
   const skipForward = () => {
     audioRef.current.currentTime += 15;
@@ -238,7 +175,6 @@ const PlayerMain = ({ bookData }) => {
               min={0}
               max={duration}
               value={timeProgress}
-              defaultValue={0}
               ref={progressBarRef}
               onChange={handleProgressChange}
               className="rounded-lg h-1 max-w-[300px] w-full cursor-pointer outline-none bg-gradient-to-r from-green-400 
