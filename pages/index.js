@@ -1,7 +1,5 @@
 import Head from "next/head";
 import HomePage from "@/Components/HomePage";
-import ForYouPage from "../pages/foryoupage";
-import ReactAudioPlayer from "react-audio-player";
 
 export default function Home() {
   return (
@@ -13,8 +11,6 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <HomePage />
-      {/* <ReactAudioPlayer /> */}
-      {/* <ForYouPage /> */}
     </>
   );
 }
