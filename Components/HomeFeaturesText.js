@@ -1,26 +1,47 @@
+import { useEffect, useState } from "react";
+
 function HomeFeaturesText() {
+  const [greenIndex, setGreenIndex] = useState(0);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setGreenIndex((greenIndex) => (greenIndex + 1) % titles.length);
+    }, 2000);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const titles = [
+    "Enhance your Knowledge",
+    "Achieve greater success",
+    "Improve your health",
+    "Develop better parenting skills",
+    "Increase happiness",
+    "Be the best version of yourself!",
+  ];
+
+  const titles1 = [
+    "Expand your learning",
+    "Accomplish your goals",
+    "Strengthen your vitality",
+    "Become a better caregiver",
+    "Improve your mood",
+    "Maximize your abilities",
+  ];
+
   return (
     <>
       <div className="flex gap-[80px] mb-[96px] ">
         <div className="w-full flex flex-col justify-center">
-          <div className="text-3xl font-medium text-gray-500 mb-4 ">
-            Enhance your Knowledge
-          </div>
-          <div className="text-3xl font-medium text-gray-500 mb-4 ">
-            Achieve greater success
-          </div>
-          <div className="text-3xl font-medium text-gray-500 mb-4 ">
-            Improve your health
-          </div>
-          <div className="text-3xl font-medium text-gray-500 mb-4 ">
-            Develop better parenting skills
-          </div>
-          <div className="text-3xl font-medium text-gray-500 mb-4 ">
-            Increase happiness
-          </div>
-          <div className="text-3xl font-medium text-gray-500 mb-4 ">
-            Be the best version of yourself!
-          </div>
+          {titles.map((title, index) => (
+            <div
+              key={title}
+              className={`text-[32px] font-medium mb-4 ${
+                index === greenIndex ? "text-[#2bd97c]" : "text-[#6b757b]"
+              }`}
+            >
+              {title}
+            </div>
+          ))}
         </div>
         <div className="w-full flex flex-col justify-center gap-5 bg-gray-200 py-10 px-5">
           <div className="flex gap-4 ">
@@ -70,24 +91,16 @@ function HomeFeaturesText() {
           </div>
         </div>
         <div className="w-full flex flex-col justify-center items-end">
-          <div className="text-3xl font-medium text-gray-500 mb-4 ">
-            Expand your learning
-          </div>
-          <div className="text-3xl font-medium text-gray-500 mb-4 ">
-            Accomplish your goals
-          </div>
-          <div className="text-3xl font-medium text-gray-500 mb-4 ">
-            Strengthen your vitality
-          </div>
-          <div className="text-3xl font-medium text-gray-500 mb-4 ">
-            Become a better caregiver
-          </div>
-          <div className="text-3xl font-medium text-gray-500 mb-4 ">
-            Improve your mood
-          </div>
-          <div className="text-3xl font-medium text-gray-500 mb-4 ">
-            Maximize your abilities
-          </div>
+          {titles1.map((title, index) => (
+            <div
+              key={title}
+              className={`text-[32px] font-medium mb-4 ${
+                index === greenIndex ? "text-[#2bd97c]" : "text-[#6b757b]"
+              }`}
+            >
+              {title}
+            </div>
+          ))}
         </div>
       </div>
     </>

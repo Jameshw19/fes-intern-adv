@@ -1,6 +1,7 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import Link from "next/link";
 
 function ForYouHeader() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -42,9 +43,9 @@ function ForYouHeader() {
   return (
     <>
       <div className="bg-white border-b h-20 z-[1]   ">
-        <div className="relative flex items-center justify-between px-8 max-w-[1070px] m-0 h-full  ">
+        <div className="relative flex items-center justify-between px-8 max-w-[1070px] m-auto h-full  ">
           <img
-            // className="h-[132px] w-[132px] "
+            className="h-[132px] w-[132px] "
             // src="https://cdn.dribbble.com/users/846370/screenshots/6761160/logo_1501.jpg "
             alt="logo"
           />
@@ -75,27 +76,29 @@ function ForYouHeader() {
                 </div>
               ) : (
                 results.map((book) => (
-                  <a className="flex items-center p-4 gap-6 h-[120px] border-b-[1px] border-b-[#e1e7ea] ">
-                    <div className="h-20 w-20 min-w-[80px]">
-                      <img src={book.imageLink} alt="" />
-                    </div>
-                    <div>
-                      <div className="text-base font-medium text-[#032b41] mb-2">
-                        {book.title}
-                      </div>
-                      <div className="text-sm font-light text-[#6b757b] mb-2">
-                        {book.author}
+                  <Link href={"/book/" + book.id} bookData={book}>
+                    <div className="flex items-center p-4 gap-6 h-[120px] border-b-[1px] border-b-[#e1e7ea] ">
+                      <div className="h-20 w-20 min-w-[80px]">
+                        <img src={book.imageLink} alt="" />
                       </div>
                       <div>
-                        <div className="flex items-center gap-1 text-sm font-light text-[#6b757b] ">
-                          <div className="flex w-4 h-4">
-                            <AccessTimeIcon className="w-full h-full" />
+                        <div className="text-base font-medium text-[#032b41] mb-2">
+                          {book.title}
+                        </div>
+                        <div className="text-sm font-light text-[#6b757b] mb-2">
+                          {book.author}
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-1 text-sm font-light text-[#6b757b] ">
+                            <div className="flex w-4 h-4">
+                              <AccessTimeIcon className="w-full h-full" />
+                            </div>
+                            <div>03:02</div>
                           </div>
-                          <div>03:02</div>
                         </div>
                       </div>
                     </div>
-                  </a>
+                  </Link>
                 ))
               )}
             </div>

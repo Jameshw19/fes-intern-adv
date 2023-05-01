@@ -5,12 +5,38 @@ import HandshakeIcon from "@mui/icons-material/Handshake";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from "react";
 import Footer from "@/Components/Footer";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { createCheckoutSession } from "@/stripe/createCheckoutSession";
+import usePremiumStatus from "@/stripe/usePremiumStatus";
+import { getAuth } from "firebase/auth";
 
 function ChoosePlan() {
   const [isDivShown0, setIsDivShown0] = useState(false);
   const [isDivShown1, setIsDivShown1] = useState(false);
   const [isDivShown2, setIsDivShown2] = useState(false);
   const [isDivShown3, setIsDivShown3] = useState(false);
+
+  const [selectedPlan, setSelectedPlan] = useState(1);
+
+  const auth = getAuth();
+  const [user, userLoading] = useAuthState(auth);
+  const userIsPremium = usePremiumStatus(user);
+
+  const handleSubscriptionClick = () => {
+    if (selectedPlan === "premiumYearly") {
+      handleYearlyClick();
+    } else {
+      handleMonthlyClick();
+    }
+  };
+
+  const handleMonthlyClick = () => {
+    createCheckoutSession(user.uid, "price_1N1VuqLXOr0D0CNbCMpNCdGv");
+  };
+
+  const handleYearlyClick = () => {
+    createCheckoutSession(user.uid, "price_1N0QPuLXOr0D0CNbFAYklmsF");
+  };
 
   const toggleDiv0 = () => {
     setIsDivShown0(!isDivShown0);
@@ -80,17 +106,32 @@ function ChoosePlan() {
               <div className="text-3xl text-[#032b41] text-center mb-8 font-bold">
                 Choose the plan that fits you
               </div>
-              <div className="flex gap-5 p-5 bg-[#f1f6f4] border-4 border-[#bac8ce] rounded cursor-pointer max-w-[680px] m-auto active:border-4 active:border-[#2be080]">
-                <div className="relative w-5 h-5 rounded-[50%] border-2 border-black flex items-center justify-center">
-                  <div className="absolute w-[6px] h-[6px] bg-black rounded-[50%]"></div>
+              <div
+                className={`flex gap-5 p-5 bg-[#f1f6f4] border-4 rounded cursor-pointer max-w-[680px] m-auto ${
+                  selectedPlan === "premiumYearly"
+                    ? "border-green-500"
+                    : "border-[#bac8ce]"
+                }`}
+                onClick={() => setSelectedPlan("premiumYearly")}
+              >
+                <div
+                  className={`relative w-5 h-5 rounded-[50%] border-2 border-black flex items-center justify-center ${
+                    selectedPlan === "premiumYearly"
+                  }`}
+                >
+                  {selectedPlan === "premiumYearly" && (
+                    <div className="absolute w-[6px] h-[6px] bg-black rounded-[50%]"></div>
+                  )}
                 </div>
                 <div>
                   <div className="text-lg font-semibold text-[#032b41] mb-2 ">
                     Premium Plus Yearly
                   </div>
+
                   <div className="text-2xl font-bold text-[#032b41] mb-2 ">
                     $99.99/year
                   </div>
+
                   <div className="text-sm text-[#6b757b]  ">
                     7-day free trial included
                   </div>
@@ -102,9 +143,22 @@ function ChoosePlan() {
                 <div className="flex-grow h-[1px] bg-[#bac8ce]"></div>
               </div>
               <div>
-                <div className="flex gap-5 p-5 bg-[#f1f6f4] border-4 border-[#bac8ce] rounded cursor-pointer max-w-[680px] m-auto active:border-4 active:border-[#2be080]">
-                  <div className="relative w-5 h-5 rounded-[50%] border-2 border-black flex items-center justify-center">
-                    <div className="absolute w-[6px] h-[6px] bg-black rounded-[50%]"></div>
+                <div
+                  className={`flex gap-5 p-5 bg-[#f1f6f4] border-4 rounded cursor-pointer max-w-[680px] m-auto ${
+                    selectedPlan === "premiumMonthly"
+                      ? "border-green-500"
+                      : "border-[#bac8ce]"
+                  }`}
+                  onClick={() => setSelectedPlan("premiumMonthly")}
+                >
+                  <div
+                    className={`relative w-5 h-5 rounded-[50%] border-2 border-black flex items-center justify-center ${
+                      selectedPlan === "premiumMonthly"
+                    }`}
+                  >
+                    {selectedPlan === "premiumMonthly" && (
+                      <div className="absolute w-[6px] h-[6px] bg-black rounded-[50%]"></div>
+                    )}
                   </div>
                   <div>
                     <div className="text-lg font-semibold text-[#032b41] mb-2 ">
@@ -120,22 +174,34 @@ function ChoosePlan() {
                 </div>
               </div>
               <div className="bg-white sticky bottom-0 z-1 py-8 flex flex-col items-center gap-4">
-                <span>
-                  <button
-                    className="bg-[#2bd97c] text-black w-[300px] h-10 rounded text-base flex items-center justify-center min-w-[180px]
-                  cursor-pointer outline-none border-none
-                  "
-                  >
-                    <span className="text-base text-black">
-                      Start your free 7 day trial today
-                    </span>
-                  </button>
-                </span>
-                <div className="text-xs text-[#6b757b] text-center">
-                  Cancel your trial at any time before it ends, and you won’t be
-                  charged.
-                </div>
+                {selectedPlan ? (
+                  <span>
+                    {!userIsPremium ? (
+                      <button
+                        onClick={handleSubscriptionClick}
+                        className="bg-[#2bd97c] text-black w-[300px] h-10 rounded text-base flex items-center justify-center min-w-[180px]
+                      cursor-pointer outline-none border-none"
+                      >
+                        <span className="text-base text-black">
+                          {selectedPlan === "premiumYearly"
+                            ? "Start your free 7-day trial"
+                            : "Start your first month"}
+                        </span>
+                      </button>
+                    ) : (
+                      <div></div>
+                    )}
+                  </span>
+                ) : null}
+                {selectedPlan ? (
+                  <div className="text-xs text-[#6b757b] text-center">
+                    {selectedPlan === "premiumYearly"
+                      ? "Cancel your trial at any time before it ends, and you won’t be charged"
+                      : "30-day money back guarantee, no questions asked."}
+                  </div>
+                ) : null}
               </div>
+
               <div>
                 <div className="border-b-[1px] border-b-[#ddd] mb-2 overflow-hidden">
                   <div
