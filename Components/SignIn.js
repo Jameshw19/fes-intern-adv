@@ -3,7 +3,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useEffect, useState } from "react";
 import SignUp from "./SignUp";
 import { useRouter } from "next/router";
-import { UserAuth } from "@/pages/context/AuthContext";
+import { UserAuth } from "@/Components/context/AuthContext";
 
 function SignIn({ handleCloseModal }) {
   const { logIn, guestLogin } = UserAuth();
