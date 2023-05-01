@@ -9,6 +9,7 @@ import {
 import { doc, setDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
+import React from "react";
 
 const AuthContext = createContext();
 
@@ -119,21 +120,6 @@ export const AuthContextProvider = ({ children }) => {
     };
   }, []);
 
-  //   const logOut = async () => {
-  //     try {
-  //       const userCredential = await signOut(auth);
-  //       //   const user = userCredential;
-  //       console.log(user);
-  //       // Sign-out successful.
-  //     } catch (error) {
-  //       let errorMessage = "";
-  //       switch (error.code) {
-  //       }
-  //       alert(errorMessage);
-  //       // An error happened.
-  //     }
-  //   };
-
   const { push } = useRouter();
 
   const authContextValue = {
@@ -142,7 +128,6 @@ export const AuthContextProvider = ({ children }) => {
     guestLogin,
     logOut,
     user,
-    // saveToLibrary,
   };
 
   return (
