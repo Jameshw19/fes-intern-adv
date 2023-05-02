@@ -82,7 +82,7 @@ function ChoosePlan() {
                     <DescriptionIcon className="h-[60px] w-[60px]" />
                   </div>
                   <div className="text-[#394547] leading-normal">
-                    <b>Key ideas in few min</b>with many books to read
+                    <b>Key ideas in few min</b> with many books to read
                   </div>
                 </div>
                 <div>

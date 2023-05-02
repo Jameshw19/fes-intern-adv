@@ -4,10 +4,10 @@ import {
   addDoc,
   onSnapshot,
 } from "firebase/firestore";
-import getStripe from "./initializeStripe";
+import getStripe from "../initializeStripe";
 
 export async function createCheckoutSession(uid: string, priceId: string) {
-  console.log(uid);
+  // console.log(uid);
   const firestore = getFirestore();
 
   const checkoutSessionRef = await addDoc(
@@ -27,5 +27,3 @@ export async function createCheckoutSession(uid: string, priceId: string) {
     }
   });
 }
-
-// price_1N0QPuLXOr0D0CNbFAYklmsF yearly
