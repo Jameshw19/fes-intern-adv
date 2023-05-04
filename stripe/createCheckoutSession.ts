@@ -10,20 +10,24 @@ export async function createCheckoutSession(uid: string, priceId: string) {
   console.log(priceId);
   const firestore = getFirestore();
 
-  const checkoutSessionRef = await addDoc(
-    collection(firestore, `users/${uid}/checkout_sessions`),
-    {
-      price: priceId,
-      success_url: window.location.origin,
-      cancel_url: window.location.origin,
-    }
-  );
+  try {
+    const checkoutSessionRef = await addDoc(
+      collection(firestore, `users/${uid}/checkout_sessions`),
+      {
+        price: priceId,
+        success_url: window.location.origin,
+        cancel_url: window.location.origin,
+      }
+    );
 
-  onSnapshot(checkoutSessionRef, async (snap) => {
-    const { sessionId } = snap.data();
-    if (sessionId) {
-      const stripe = await getStripe();
-      stripe.redirectToCheckout({ sessionId });
-    }
-  });
+    onSnapshot(checkoutSessionRef, async (snap) => {
+      const { sessionId } = snap.data();
+      if (sessionId) {
+        const stripe = await getStripe();
+        stripe.redirectToCheckout({ sessionId });
+      }
+    });
+  } catch (error) {
+    console.error("Error creating checkout session:", error);
+  }
 }
