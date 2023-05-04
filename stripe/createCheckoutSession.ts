@@ -7,13 +7,8 @@ import {
 import getStripe from "./initializeStripe";
 
 export async function createCheckoutSession(uid: string, priceId: string) {
+  // console.log(uid);
   const firestore = getFirestore();
-
-  // Check if priceId is defined before adding to Firestore document
-  if (priceId === undefined || priceId === null) {
-    console.error("Invalid priceId passed to createCheckoutSession function");
-    return;
-  }
 
   const checkoutSessionRef = await addDoc(
     collection(firestore, `users/${uid}/checkout_sessions`),
