@@ -13,7 +13,7 @@ export async function createCheckoutSession(uid: string, priceId: string) {
   const checkoutSessionRef = await addDoc(
     collection(firestore, `users/${uid}/checkout_sessions`),
     {
-      price: "price_1N1VuqLXOr0D0CNbCMpNCdGv",
+      price: priceId,
       success_url: window.location.origin,
       cancel_url: window.location.origin,
     }
