@@ -31,17 +31,11 @@ function ChoosePlan() {
   };
 
   const handleMonthlyClick = () => {
-    createCheckoutSession(
-      user.uid,
-      process.env.NEXT_PUBLIC_STRIPE_PRICE_MONTHLY
-    );
+    createCheckoutSession(user.uid, "price_1N1VuqLXOr0D0CNbCMpNCdGv");
   };
 
   const handleYearlyClick = () => {
-    createCheckoutSession(
-      user.uid,
-      process.env.NEXT_PUBLIC_STRIPE_PRICE_YEARLY
-    );
+    createCheckoutSession(user.uid, "price_1N0QPuLXOr0D0CNbFAYklmsF");
   };
 
   const toggleDiv0 = () => {
