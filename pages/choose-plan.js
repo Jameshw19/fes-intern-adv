@@ -6,7 +6,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from "react";
 import Footer from "@/Components/Footer";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { createCheckoutSession } from "@/createCheckoutSession";
+import { createCheckoutSession } from "@/stripe/createCheckoutSession";
 import usePremiumStatus from "@/stripe/usePremiumStatus";
 import { getAuth } from "firebase/auth";
 
@@ -41,15 +41,9 @@ function ChoosePlan() {
 
   const handleSubscriptionClick = () => {
     if (selectedPlan === "premiumYearly") {
-      createCheckoutSession(
-        user.uid,
-        process.env.NEXT_PUBLIC_STRIPE_PRICE_YEARLY
-      );
+      createCheckoutSession(user.uid, process.env.stripe_price_yearly);
     } else {
-      createCheckoutSession(
-        user.uid,
-        process.env.NEXT_PUBLIC_STRIPE_PRICE_MONTHLY
-      );
+      createCheckoutSession(user.uid, process.env.stripe_price_monthly);
     }
   };
 
