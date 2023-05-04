@@ -87,7 +87,7 @@ function settings() {
                     <div className="text-lg font-bold text-[#032b41] ">
                       Email
                     </div>
-                    <div className="text-[#032b41]">test@test.com</div>
+                    <div className="text-[#032b41]">{user.email}</div>
                   </div>
                 </>
               )}
