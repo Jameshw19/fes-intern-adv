@@ -17,10 +17,19 @@ function ChoosePlan() {
   const [isDivShown3, setIsDivShown3] = useState(false);
 
   const [selectedPlan, setSelectedPlan] = useState(1);
+  const [openModal, setOpenModal] = useState(false);
 
   const auth = getAuth();
   const [user, userLoading] = useAuthState(auth);
   const userIsPremium = usePremiumStatus(user);
+  // const { user } = UserAuth();
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
 
   // const handleSubscriptionClick = () => {
   //   if (selectedPlan === "premiumYearly") {
@@ -37,7 +46,10 @@ function ChoosePlan() {
         process.env.NEXT_PUBLIC_STRIPE_PRICE_YEARLY
       );
     } else {
-      createCheckoutSession(user.uid, "price_1N1VuqLXOr0D0CNbCMpNCdGv");
+      createCheckoutSession(
+        user.uid,
+        process.env.NEXT_PUBLIC_STRIPE_PRICE_MONTHLY
+      );
     }
   };
 
