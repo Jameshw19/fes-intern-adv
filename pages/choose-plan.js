@@ -22,21 +22,38 @@ function ChoosePlan() {
   const [user, userLoading] = useAuthState(auth);
   const userIsPremium = usePremiumStatus(user);
 
+  // const handleSubscriptionClick = () => {
+  //   if (selectedPlan === "premiumYearly") {
+  //     handleYearlyClick();
+  //   } else {
+  //     handleMonthlyClick();
+  //   }
+  // };
+
   const handleSubscriptionClick = () => {
     if (selectedPlan === "premiumYearly") {
-      handleYearlyClick();
+      createCheckoutSession(
+        user.uid,
+        process.env.NEXT_PUBLIC_STRIPE_PRICE_YEARLY
+      );
     } else {
-      handleMonthlyClick();
+      createCheckoutSession(user.uid, "price_1N1VuqLXOr0D0CNbCMpNCdGv");
     }
   };
 
-  const handleMonthlyClick = () => {
-    createCheckoutSession(user.uid, "price_1N1VuqLXOr0D0CNbCMpNCdGv");
-  };
+  // const handleMonthlyClick = () => {
+  //   createCheckoutSession(
+  //     user.uid,
+  //     process.env.NEXT_PUBLIC_STRIPE_PRICE_MONTHLY
+  //   );
+  // };
 
-  const handleYearlyClick = () => {
-    createCheckoutSession(user.uid, "price_1N0QPuLXOr0D0CNbFAYklmsF");
-  };
+  // const handleYearlyClick = () => {
+  //   createCheckoutSession(
+  //     user.uid,
+  //     process.env.NEXT_PUBLIC_STRIPE_PRICE_YEARLY
+  //   );
+  // };
 
   const toggleDiv0 = () => {
     setIsDivShown0(!isDivShown0);

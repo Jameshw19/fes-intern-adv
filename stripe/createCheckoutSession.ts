@@ -7,7 +7,7 @@ import {
 import getStripe from "./initializeStripe";
 
 export async function createCheckoutSession(uid: string, priceId: string) {
-  // console.log(uid);
+  console.log(priceId);
   const firestore = getFirestore();
 
   const checkoutSessionRef = await addDoc(
