@@ -4,7 +4,7 @@ import {
   addDoc,
   onSnapshot,
 } from "firebase/firestore";
-import getStripe from "./initializeStripe";
+import getStripe from "./stripe/initializeStripe";
 
 export async function createCheckoutSession(uid: string, priceId: string) {
   console.log(priceId);

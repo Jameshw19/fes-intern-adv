@@ -6,7 +6,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from "react";
 import Footer from "@/Components/Footer";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { createCheckoutSession } from "@/stripe/createCheckoutSession";
+import { createCheckoutSession } from "@/createCheckoutSession";
 import usePremiumStatus from "@/stripe/usePremiumStatus";
 import { getAuth } from "firebase/auth";
 
