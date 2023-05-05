@@ -6,12 +6,11 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import { getAuth, signOut } from "firebase/auth";
-import app from "../firebase";
-// import app from "@/firebase";
+import app from "@/firebase";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import SignIn from "./SignIn";
-import { UserAuth } from "../Components/context/AuthContext";
+import { UserAuth } from "@/Components/context/AuthContext";
 
 function ForYouSideBar() {
   const auth = getAuth(app);
