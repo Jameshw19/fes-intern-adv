@@ -9,8 +9,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { createCheckoutSession } from "@/stripe/createCheckoutSession";
 import usePremiumStatus from "@/stripe/usePremiumStatus";
 import { getAuth } from "firebase/auth";
+import { UserAuth } from "@/Components/context/AuthContext";
+import SignIn from "@/Components/SignIn";
 
 function ChoosePlan() {
+  const { user } = UserAuth();
+  const auth = getAuth();
+
   const [isDivShown0, setIsDivShown0] = useState(false);
   const [isDivShown1, setIsDivShown1] = useState(false);
   const [isDivShown2, setIsDivShown2] = useState(false);
@@ -19,10 +24,8 @@ function ChoosePlan() {
   const [selectedPlan, setSelectedPlan] = useState(1);
   const [openModal, setOpenModal] = useState(false);
 
-  const auth = getAuth();
-  const [user, userLoading] = useAuthState(auth);
-  const userIsPremium = usePremiumStatus(user);
-  // const { user } = UserAuth();
+  const [isUser, userLoading] = useAuthState(auth);
+  const userIsPremium = usePremiumStatus(isUser);
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -31,14 +34,6 @@ function ChoosePlan() {
     setOpenModal(false);
   };
 
-  // const handleSubscriptionClick = () => {
-  //   if (selectedPlan === "premiumYearly") {
-  //     handleYearlyClick();
-  //   } else {
-  //     handleMonthlyClick();
-  //   }
-  // };
-
   const handleSubscriptionClick = () => {
     if (selectedPlan === "premiumYearly") {
       createCheckoutSession(user.uid, process.env.stripe_price_yearly);
@@ -46,20 +41,6 @@ function ChoosePlan() {
       createCheckoutSession(user.uid, process.env.stripe_price_monthly);
     }
   };
-
-  // const handleMonthlyClick = () => {
-  //   createCheckoutSession(
-  //     user.uid,
-  //     process.env.NEXT_PUBLIC_STRIPE_PRICE_MONTHLY
-  //   );
-  // };
-
-  // const handleYearlyClick = () => {
-  //   createCheckoutSession(
-  //     user.uid,
-  //     process.env.NEXT_PUBLIC_STRIPE_PRICE_YEARLY
-  //   );
-  // };
 
   const toggleDiv0 = () => {
     setIsDivShown0(!isDivShown0);
@@ -199,20 +180,44 @@ function ChoosePlan() {
               <div className="bg-white sticky bottom-0 z-1 py-8 flex flex-col items-center gap-4">
                 {selectedPlan ? (
                   <span>
-                    {!userIsPremium ? (
-                      <button
-                        onClick={handleSubscriptionClick}
-                        className="bg-[#2bd97c] text-black w-[300px] h-10 rounded text-base flex items-center justify-center min-w-[180px]
-                      cursor-pointer outline-none border-none"
-                      >
-                        <span className="text-base text-black">
-                          {selectedPlan === "premiumYearly"
-                            ? "Start your free 7-day trial"
-                            : "Start your first month"}
-                        </span>
-                      </button>
+                    {user ? (
+                      <>
+                        {" "}
+                        {!userIsPremium ? (
+                          <button
+                            onClick={handleSubscriptionClick}
+                            className="bg-[#2bd97c] text-black w-[300px] h-10 rounded text-base flex items-center justify-center min-w-[180px]
+                        cursor-pointer outline-none border-none"
+                          >
+                            <span className="text-base text-black">
+                              {selectedPlan === "premiumYearly"
+                                ? "Start your free 7-day trial"
+                                : "Start your first month"}
+                            </span>
+                          </button>
+                        ) : (
+                          <></>
+                        )}
+                      </>
                     ) : (
-                      <div></div>
+                      <>
+                        <>
+                          <button
+                            onClick={handleOpenModal}
+                            className="bg-[#2bd97c] text-black w-[300px] h-10 rounded text-base flex items-center justify-center min-w-[180px]
+                        cursor-pointer outline-none border-none"
+                          >
+                            <span className="text-base text-black">
+                              {selectedPlan === "premiumYearly"
+                                ? "Start your free 7-day trial"
+                                : "Start your first month"}
+                            </span>
+                          </button>
+                          {openModal && (
+                            <SignIn handleCloseModal={handleCloseModal} />
+                          )}
+                        </>
+                      </>
                     )}
                   </span>
                 ) : null}
