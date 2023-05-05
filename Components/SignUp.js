@@ -1,7 +1,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import SignIn from "./SignIn";
 import { useState } from "react";
-import { UserAuth } from "@/Components/context/AuthContext";
+import { UserAuth } from "../Components/context/AuthContext";
 
 function SignUp({ handleCloseModal }) {
   const { signUp } = UserAuth();
