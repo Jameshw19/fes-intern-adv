@@ -1,4 +1,3 @@
-import Image from "next/image";
 import DescriptionIcon from "@mui/icons-material/Description";
 import SpaIcon from "@mui/icons-material/Spa";
 import HandshakeIcon from "@mui/icons-material/Handshake";
@@ -6,10 +5,12 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from "react";
 import Footer from "@/Components/Footer";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { createCheckoutSession } from "@/stripe/createCheckoutSession";
+// import { createCheckoutSession } from "@/stripe/createCheckoutSession";
+// import { UserAuth } from "@/Components/context/AuthContext";
+import { createCheckoutSession } from "../stripe/createCheckoutSession";
+import { UserAuth } from "../Components/context/AuthContext";
 import usePremiumStatus from "@/stripe/usePremiumStatus";
 import { getAuth } from "firebase/auth";
-import { UserAuth } from "@/Components/context/AuthContext";
 import SignIn from "@/Components/SignIn";
 
 function ChoosePlan() {
