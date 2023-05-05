@@ -6,7 +6,7 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { UserAuth } from "@/pages/context/AuthContext";
+import { UserAuth } from "@/Components/context/AuthContext";
 import SignUp from "./SignUp";
 import { db } from "@/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
