@@ -1,7 +1,7 @@
 import ForYouHeader from "@/Components/ForYouHeader";
 import ForYouSideBar from "@/Components/ForYouSideBar";
 import React, { useEffect, useState } from "react";
-import { UserAuth } from "../Components/context/AuthContext";
+import { UserAuth } from "./context/AuthContext";
 import { useRouter } from "next/router";
 import SignIn from "@/Components/SignIn";
 

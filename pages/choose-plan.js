@@ -6,7 +6,7 @@ import { useState } from "react";
 import Footer from "@/Components/Footer";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { createCheckoutSession } from "@/stripe/createCheckoutSession";
-import { UserAuth } from "@/Components/context/AuthContext";
+import { UserAuth } from "@/pages/context/AuthContext";
 import usePremiumStatus from "@/stripe/usePremiumStatus";
 import { getAuth } from "firebase/auth";
 import SignIn from "@/Components/SignIn";
